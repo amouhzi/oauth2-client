@@ -6,7 +6,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^5.3|^5.6|^7.0",
+        "php": "^5.3",
         "guzzlehttp/guzzle": "^3.8",
         "paragonie/random_compat": "^1|^2"
     },
@@ -14,7 +14,7 @@
         "eloquent/liberator": "^2.0",
         "eloquent/phony-phpunit": "^1.0|^3.0",
         "jakub-onderka/php-parallel-lint": "^0.9.2",
-        "phpunit/phpunit": "^5.7|^6.0",
+        "phpunit/phpunit": "^4.8",
         "squizlabs/php_codesniffer": "^2.3|^3.0"
     },
     "keywords": [
