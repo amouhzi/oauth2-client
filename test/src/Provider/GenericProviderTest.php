@@ -16,11 +16,11 @@ class GenericProviderTest extends TestCase
     public function testRequiredOptions()
     {
         // Additionally, these options are required by the GenericProvider
-        $required = [
+        $required = array(
             'urlAuthorize'   => 'http://example.com/authorize',
             'urlAccessToken' => 'http://example.com/token',
             'urlResourceOwnerDetails' => 'http://example.com/user',
-        ];
+        );
 
         foreach ($required as $key => $value) {
             // Test each of the required options by removing a single value
@@ -41,7 +41,7 @@ class GenericProviderTest extends TestCase
 
     public function testConfigurableOptions()
     {
-        $options = [
+        $options = array(
             'urlAuthorize'      => 'http://example.com/authorize',
             'urlAccessToken'    => 'http://example.com/token',
             'urlResourceOwnerDetails' => 'http://example.com/user',
@@ -52,13 +52,13 @@ class GenericProviderTest extends TestCase
             'responseCode'      => 'mock_code',
             'responseResourceOwnerId' => 'mock_response_uid',
             'scopes'            => ['mock', 'scopes'],
-        ];
+        );
 
-        $provider = new GenericProvider($options + [
+        $provider = new GenericProvider($options + array(
             'clientId'       => 'mock_client_id',
             'clientSecret'   => 'mock_secret',
             'redirectUri'    => 'none',
-        ]);
+        ));
 
         foreach ($options as $key => $expected) {
             $this->assertAttributeEquals($expected, $key, $provider);
@@ -88,12 +88,12 @@ class GenericProviderTest extends TestCase
     {
         $token = new AccessToken(['access_token' => 'mock_token']);
 
-        $provider = new MockProvider([
+        $provider = new MockProvider(array(
             'urlAuthorize'   => 'http://example.com/authorize',
             'urlAccessToken' => 'http://example.com/token',
             'urlResourceOwnerDetails' => 'http://example.com/user',
             'responseResourceOwnerId' => 'mock_response_uid',
-        ]);
+        ));
 
         $user = $provider->getResourceOwner($token);
 
@@ -112,11 +112,11 @@ class GenericProviderTest extends TestCase
     {
         $response = Phony::mock(ResponseInterface::class);
 
-        $options = [
+        $options = array(
             'urlAuthorize'      => 'http://example.com/authorize',
             'urlAccessToken'    => 'http://example.com/token',
             'urlResourceOwnerDetails' => 'http://example.com/user',
-        ];
+        );
 
         $provider = new GenericProvider($options);
 
@@ -138,11 +138,11 @@ class GenericProviderTest extends TestCase
     {
         $response = Phony::mock(ResponseInterface::class);
 
-        $options = [
+        $options = array(
             'urlAuthorize'      => 'http://example.com/authorize',
             'urlAccessToken'    => 'http://example.com/token',
             'urlResourceOwnerDetails' => 'http://example.com/user',
-        ];
+        );
 
         $provider = new GenericProvider($options + $extraOptions);
 
@@ -155,14 +155,14 @@ class GenericProviderTest extends TestCase
     }
 
     public function checkResponseThrowsExceptionProvider() {
-        return [
-            [['error' => 'foobar',]],
-            [['error' => 'foobar',] , ['responseCode' => 'code']],
+        return array(
+            array(array('error' => 'foobar',)),
+            array('error' => 'foobar',) , array('responseCode' => 'code')),
             // Some servers return non-compliant responses. Provider shouldn't 'Fatal error: Wrong parameters'
-            [['error' => 'foobar', 'code' => 'abc55'], ['responseCode' => 'code']],
-            [['error' => 'foobar', 'code' => ['badformat']], ['responseCode' => 'code']],
-            [['error' => ['message' => 'msg', 'code' => 56]]],
-            [['error' => ['errors' => ['code' => 67, 'message' => 'msg']]]],
-        ];
+            array(array('error' => 'foobar', 'code' => 'abc55'), array('responseCode' => 'code')),
+            array(array('error' => 'foobar', 'code' => array('badformat')), array('responseCode' => 'code')),
+            array(array('error' => array('message' => 'msg', 'code' => 56))),
+            array(array('error' => array('errors' => array('code' => 67, 'message' => 'msg')))),
+        );
     }
 }
