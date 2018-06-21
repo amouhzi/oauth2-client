@@ -97,13 +97,13 @@ class AccessToken implements JsonSerializable
         // Capture any additional values that might exist in the token but are
         // not part of the standard response. Vendors will sometimes pass
         // additional user data this way.
-        $this->values = array_diff_key($options, array_flip([
+        $this->values = array_diff_key($options, array_flip(array(
             'access_token',
             'resource_owner_id',
             'refresh_token',
             'expires_in',
             'expires',
-        ]));
+        )));
     }
 
     /**
