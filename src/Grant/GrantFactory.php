@@ -24,7 +24,7 @@ class GrantFactory
     /**
      * @var array
      */
-    protected $registry = [];
+    protected $registry = array();
 
     /**
      * Defines a grant singleton in the registry.
