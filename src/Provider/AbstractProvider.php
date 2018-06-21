@@ -303,10 +303,10 @@ abstract class AbstractProvider
             $options['scope'] = $this->getDefaultScopes();
         }
 
-        $options += [
+        $options += array(
             'response_type'   => 'code',
             'approval_prompt' => 'auto'
-        ];
+        );
 
         if (is_array($options['scope'])) {
             $separator = $this->getScopeSeparator();
