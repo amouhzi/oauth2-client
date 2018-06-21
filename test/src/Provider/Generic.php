@@ -9,24 +9,24 @@ use Psr\Http\Message\ResponseInterface;
 
 class Generic extends GenericProvider
 {
-    public function __construct($options = [], array $collaborators = [])
+    public function __construct($options = array(), array $collaborators = array())
     {
         // Add the required defaults for AbstractProvider
-        $options += [
+        $options += array(
             'clientId'     => 'mock_client_id',
             'clientSecret' => 'mock_secret',
             'redirectUri'  => 'none',
-        ];
+        );
 
         parent::__construct($options);
     }
 
     protected function fetchResourceOwnerDetails(AccessToken $token)
     {
-        return [
+        return array(
             'mock_response_uid' => 1,
             'username'          => 'testmock',
             'email'             => 'mock@example.com',
-        ];
+        );
     }
 }
