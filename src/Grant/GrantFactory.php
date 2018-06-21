@@ -82,7 +82,7 @@ class GrantFactory
      */
     public function isGrant($class)
     {
-        return is_subclass_of($class, AbstractGrant::class);
+        return is_subclass_of($class, 'League\\OAuth2\\Client\\Grant\\AbstractGrant');
     }
 
     /**
