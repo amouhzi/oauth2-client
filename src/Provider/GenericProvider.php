@@ -26,8 +26,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class GenericProvider extends AbstractProvider
 {
-    use BearerAuthorizationTrait;
-
     /**
      * @var string
      */
@@ -229,5 +227,16 @@ class GenericProvider extends AbstractProvider
     protected function createResourceOwner(array $response, AccessToken $token)
     {
         return new GenericResourceOwner($response, $this->responseResourceOwnerId);
+    }
+    
+    /**
+     * Returns authorization headers for the 'bearer' grant.
+     *
+     * @param  mixed|null $token Either a string or an access token instance
+     * @return array
+     */
+    protected function getAuthorizationHeaders($token = null)
+    {
+        return ['Authorization' => 'Bearer ' . $token];
     }
 }
