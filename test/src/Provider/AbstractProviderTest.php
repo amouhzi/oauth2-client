@@ -27,11 +27,11 @@ class AbstractProviderTest extends TestCase
 
     protected function setUp()
     {
-        $this->provider = new MockProvider([
+        $this->provider = new MockProvider(array(
             'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
             'redirectUri' => 'none',
-        ]);
+        ));
     }
 
     /**
@@ -39,7 +39,7 @@ class AbstractProviderTest extends TestCase
      */
     public function testInvalidGrantString()
     {
-        $this->provider->getAccessToken('invalid_grant', ['invalid_parameter' => 'none']);
+        $this->provider->getAccessToken('invalid_grant', array('invalid_parameter' => 'none'));
     }
 
     /**
@@ -48,14 +48,14 @@ class AbstractProviderTest extends TestCase
     public function testInvalidGrantObject()
     {
         $grant = new \StdClass();
-        $this->provider->getAccessToken($grant, ['invalid_parameter' => 'none']);
+        $this->provider->getAccessToken($grant, array('invalid_parameter' => 'none'));
     }
 
     public function testAuthorizationUrlStateParam()
     {
-        $this->assertContains('state=XXX', $this->provider->getAuthorizationUrl([
+        $this->assertContains('state=XXX', $this->provider->getAuthorizationUrl(array(
             'state' => 'XXX'
-        ]));
+        )));
     }
 
     /**
@@ -63,9 +63,9 @@ class AbstractProviderTest extends TestCase
      */
     public function testCustomAuthorizationUrlOptions()
     {
-        $url = $this->provider->getAuthorizationUrl([
+        $url = $this->provider->getAuthorizationUrl(array(
             'foo' => 'BAR'
-        ]);
+        ));
         $query = parse_url($url, PHP_URL_QUERY);
         $this->assertNotEmpty($query);
 
@@ -79,11 +79,11 @@ class AbstractProviderTest extends TestCase
      */
     public function testConstructorSetsProperties()
     {
-        $options = [
+        $options = array(
             'clientId' => '1234',
             'clientSecret' => '4567',
             'redirectUri' => 'http://example.org/redirect'
-        ];
+        );
 
         $mockProvider = new MockProvider($options);
 
@@ -108,7 +108,7 @@ class AbstractProviderTest extends TestCase
     {
         $proxy = '192.168.0.1:8888';
 
-        $mockProvider = new MockProvider(['proxy' => $proxy]);
+        $mockProvider = new MockProvider(array('proxy' => $proxy));
 
         $config = $mockProvider->getHttpClient()->getConfig();
 
@@ -118,7 +118,7 @@ class AbstractProviderTest extends TestCase
 
     public function testCannotDisableVerifyIfNoProxy()
     {
-        $mockProvider = new MockProvider(['verify' => false]);
+        $mockProvider = new MockProvider(array('verify' => false));
 
         $config = $mockProvider->getHttpClient()->getConfig();
 
@@ -128,7 +128,7 @@ class AbstractProviderTest extends TestCase
 
     public function testCanDisableVerificationIfThereIsAProxy()
     {
-        $mockProvider = new MockProvider(['proxy' => '192.168.0.1:8888', 'verify' => false]);
+        $mockProvider = new MockProvider(array('proxy' => '192.168.0.1:8888', 'verify' => false));
 
         $config = $mockProvider->getHttpClient()->getConfig();
 
@@ -140,7 +140,7 @@ class AbstractProviderTest extends TestCase
     {
         $mockAdapter = Phony::mock(GrantFactory::class)->get();
 
-        $mockProvider = new MockProvider([], ['grantFactory' => $mockAdapter]);
+        $mockProvider = new MockProvider(array(), array('grantFactory' => $mockAdapter));
         $this->assertSame($mockAdapter, $mockProvider->getGrantFactory());
     }
 
@@ -148,7 +148,7 @@ class AbstractProviderTest extends TestCase
     {
         $mockAdapter = Phony::mock(ClientInterface::class)->get();
 
-        $mockProvider = new MockProvider([], ['httpClient' => $mockAdapter]);
+        $mockProvider = new MockProvider(array(), array('httpClient' => $mockAdapter));
         $this->assertSame($mockAdapter, $mockProvider->getHttpClient());
     }
 
@@ -156,7 +156,7 @@ class AbstractProviderTest extends TestCase
     {
         $mockAdapter = Phony::mock(RequestFactory::class)->get();
 
-        $mockProvider = new MockProvider([], ['requestFactory' => $mockAdapter]);
+        $mockProvider = new MockProvider(array(), array('requestFactory' => $mockAdapter));
         $this->assertSame($mockAdapter, $mockProvider->getRequestFactory());
     }
 
@@ -170,7 +170,7 @@ class AbstractProviderTest extends TestCase
             $this->state = $provider->getState();
         };
 
-        $this->provider->authorize([], $callback);
+        $this->provider->authorize(array(), $callback);
 
         $this->assertNotFalse($this->testFunction);
         $this->assertAttributeEquals($this->state, 'state', $this->provider);
@@ -182,13 +182,13 @@ class AbstractProviderTest extends TestCase
     public function testGetUserProperties($response, $name = null, $email = null, $id = null)
     {
         // Mock
-        $provider = new MockProvider([
+        $provider = new MockProvider(array(
           'clientId' => 'mock_client_id',
           'clientSecret' => 'mock_secret',
           'redirectUri' => 'none',
-        ]);
+        ));
 
-        $token = new AccessToken(['access_token' => 'abc', 'expires_in' => 3600]);
+        $token = new AccessToken(array('access_token' => 'abc', 'expires_in' => 3600));
 
         $stream = Phony::mock(StreamInterface::class);
         $stream->__toString->returns(json_encode(compact('id', 'name', 'email')));
@@ -234,13 +234,13 @@ class AbstractProviderTest extends TestCase
     {
         $this->expectException(\UnexpectedValueException::class);
 // Mock
-        $provider = new MockProvider([
+        $provider = new MockProvider(array(
             'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
             'redirectUri' => 'none',
-        ]);
+        ));
 
-        $token = new AccessToken(['access_token' => 'abc', 'expires_in' => 3600]);
+        $token = new AccessToken(array('access_token' => 'abc', 'expires_in' => 3600));
 
         $stream = Phony::mock(StreamInterface::class);
         $stream->__toString->returns("<html><body>some unexpected response.</body></html>");
@@ -260,51 +260,51 @@ class AbstractProviderTest extends TestCase
 
     public function userPropertyProvider()
     {
-        $response = [
+        $response = array(
             'id'    => 1,
             'email' => 'test@example.com',
             'name'  => 'test',
-        ];
+        );
 
-        $response2 = [
+        $response2 = array(
             'id'    => null,
             'email' => null,
             'name'  => null,
-        ];
+        );
 
-        $response3 = [];
+        $response3 = array();
 
-        return [
-            'full response'  => [$response, 'test', 'test@example.com', 1],
-            'empty response' => [$response2],
-            'no response'    => [$response3],
-        ];
+        return array(
+            'full response'  => array($response, 'test', 'test@example.com', 1),
+            'empty response' => array($response2),
+            'no response'    => array($response3),
+        );
     }
 
     public function getHeadersTest()
     {
         $provider = $this->getMockForAbstractClass(
             '\League\OAuth2\Client\Provider\AbstractProvider',
-            [
-              [
+            array(
+              array(
                   'clientId'     => 'mock_client_id',
                   'clientSecret' => 'mock_secret',
                   'redirectUri'  => 'none',
-              ]
-            ]
+              )
+            )
         );
 
         /**
          * @var $provider AbstractProvider
          */
-        $this->assertEquals([], $provider->getHeaders());
-        $this->assertEquals([], $provider->getHeaders('mock_token'));
+        $this->assertEquals(array(), $provider->getHeaders());
+        $this->assertEquals(array(), $provider->getHeaders('mock_token'));
 
         $provider->authorizationHeader = 'Bearer';
-        $this->assertEquals(['Authorization' => 'Bearer abc'], $provider->getHeaders('abc'));
+        $this->assertEquals(array('Authorization' => 'Bearer abc'), $provider->getHeaders('abc'));
 
-        $token = new AccessToken(['access_token' => 'xyz', 'expires_in' => 3600]);
-        $this->assertEquals(['Authorization' => 'Bearer xyz'], $provider->getHeaders($token));
+        $token = new AccessToken(array('access_token' => 'xyz', 'expires_in' => 3600));
+        $this->assertEquals(array('Authorization' => 'Bearer xyz'), $provider->getHeaders($token));
     }
 
     public function testScopesOverloadedDuringAuthorize()
@@ -316,7 +316,7 @@ class AbstractProviderTest extends TestCase
         $this->assertArrayHasKey('scope', $qs);
         $this->assertSame('test', $qs['scope']);
 
-        $url = $this->provider->getAuthorizationUrl(['scope' => ['foo', 'bar']]);
+        $url = $this->provider->getAuthorizationUrl(array('scope' => array('foo', 'bar')));
 
         parse_str(parse_url($url, PHP_URL_QUERY), $qs);
 
@@ -343,13 +343,13 @@ class AbstractProviderTest extends TestCase
 
     public function testErrorResponsesCanBeCustomizedAtTheProvider()
     {
-        $provider = new MockProvider([
+        $provider = new MockProvider(array(
           'clientId' => 'mock_client_id',
           'clientSecret' => 'mock_secret',
           'redirectUri' => 'none',
-        ]);
+        ));
 
-        $error = ["error" => "Foo error", "code" => 1337];
+        $error = array("error" => "Foo error", "code" => 1337);
         $errorJson = json_encode($error);
 
         $stream = Phony::mock(StreamInterface::class);
@@ -377,7 +377,7 @@ class AbstractProviderTest extends TestCase
         }
 
         $method = $provider->getAccessTokenMethod();
-        $url = $provider->getBaseAccessTokenUrl([]);
+        $url = $provider->getBaseAccessTokenUrl(array());
 
         // Verify
         $this->assertEquals($error['error'], $errorMessage);
@@ -402,11 +402,11 @@ class AbstractProviderTest extends TestCase
      */
     public function testClientErrorTriggersProviderException()
     {
-        $provider = new MockProvider([
+        $provider = new MockProvider(array(
           'clientId' => 'mock_client_id',
           'clientSecret' => 'mock_secret',
           'redirectUri' => 'none',
-        ]);
+        ));
 
         $stream = Phony::mock(StreamInterface::class);
         $stream->__toString->returns('{"error":"Foo error","code":1337}');
@@ -488,10 +488,10 @@ class AbstractProviderTest extends TestCase
 
     public function getAccessTokenMethodProvider()
     {
-        return [
-            ['GET'],
-            ['POST'],
-        ];
+        return array(
+            array('GET'),
+            array('POST'),
+        );
     }
 
     /**
@@ -499,19 +499,19 @@ class AbstractProviderTest extends TestCase
      */
     public function testGetAccessToken($method)
     {
-        $provider = new MockProvider([
+        $provider = new MockProvider(array(
           'clientId' => 'mock_client_id',
           'clientSecret' => 'mock_secret',
           'redirectUri' => 'none',
-        ]);
+        ));
 
         $provider->setAccessTokenMethod($method);
 
         $grant_name = 'mock';
-        $raw_response = ['access_token' => 'okay', 'expires' => time() + 3600, 'resource_owner_id' => 3];
+        $raw_response = array('access_token' => 'okay', 'expires' => time() + 3600, 'resource_owner_id' => 3);
 
         $grant = Phony::mock(AbstractGrant::class);
-        $grant->prepareRequestParameters->returns([]);
+        $grant->prepareRequestParameters->returns(array());
 
         $stream = Phony::mock(StreamInterface::class);
         $stream->__toString->returns(json_encode($raw_response));
@@ -525,7 +525,7 @@ class AbstractProviderTest extends TestCase
 
         // Run
         $provider->setHttpClient($client->get());
-        $token = $provider->getAccessToken($grant->get(), ['code' => 'mock_authorization_code']);
+        $token = $provider->getAccessToken($grant->get(), array('code' => 'mock_authorization_code'));
 
         // Verify
         $this->assertInstanceOf(AccessToken::class, $token);
@@ -559,23 +559,23 @@ class AbstractProviderTest extends TestCase
 
     public function parseResponseProvider()
     {
-        return [
-            [
+        return array(
+            array(
                 'body'    => '{"a": 1}',
                 'type'    => 'application/json',
-                'parsed'  => ['a' => 1]
-            ],
-            [
+                'parsed'  => array('a' => 1)
+            ),
+            array(
                 'body'    => 'string',
                 'type'    => 'unknown',
                 'parsed'  => 'string'
-            ],
-            [
+            ),
+            array(
                 'body'    => 'a=1&b=2',
                 'type'    => 'application/x-www-form-urlencoded',
-                'parsed'  => ['a' => 1, 'b' => 2]
-            ],
-        ];
+                'parsed'  => array('a' => 1, 'b' => 2)
+            ),
+        );
     }
 
     /**
@@ -606,18 +606,18 @@ class AbstractProviderTest extends TestCase
 
     public function getAppendQueryProvider()
     {
-        return [
-            ['test.com/?a=1', 'test.com/', '?a=1'],
-            ['test.com/?a=1', 'test.com/', '&a=1'],
-            ['test.com/?a=1', 'test.com/', 'a=1'],
-            ['test.com/?a=1', 'test.com/?a=1', '?'],
-            ['test.com/?a=1', 'test.com/?a=1', '&'],
-            ['test.com/?a=1&b=2', 'test.com/?a=1', '&b=2'],
-            ['test.com/?a=1&b=2', 'test.com/?a=1', 'b=2'],
-            ['test.com/?a=1&b=2', 'test.com/?a=1', '?b=2'],
-            ['test.com/?a=1&b=1&b=2', 'test.com/?a=1&b=1', 'b=2'],
-            ['test.com/?a=1&b=2&b=2', 'test.com/?a=1&b=2', 'b=2'],
-        ];
+        return array(
+            array('test.com/?a=1', 'test.com/', '?a=1'),
+            array('test.com/?a=1', 'test.com/', '&a=1'),
+            array('test.com/?a=1', 'test.com/', 'a=1'),
+            array('test.com/?a=1', 'test.com/?a=1', '?'),
+            array('test.com/?a=1', 'test.com/?a=1', '&'),
+            array('test.com/?a=1&b=2', 'test.com/?a=1', '&b=2'),
+            array('test.com/?a=1&b=2', 'test.com/?a=1', 'b=2'),
+            array('test.com/?a=1&b=2', 'test.com/?a=1', '?b=2'),
+            array('test.com/?a=1&b=1&b=2', 'test.com/?a=1&b=1', 'b=2'),
+            'test.com/?a=1&b=2&b=2', 'test.com/?a=1&b=2', 'b=2'),
+        );
     }
 
     /**
@@ -663,7 +663,7 @@ class AbstractProviderTest extends TestCase
         $provider->getAccessTokenResourceOwnerId->returns('user.id');
         $provider = Liberator::liberate($provider->get());
 
-        $result = ['user' => ['id' => uniqid()]];
+        $result = array('user' => array('id' => uniqid()));
         $newResult = $provider->prepareAccessTokenResponse($result);
 
         $this->assertArrayHasKey('resource_owner_id', $newResult);
@@ -676,7 +676,7 @@ class AbstractProviderTest extends TestCase
         $provider->getAccessTokenResourceOwnerId->returns(new \stdClass);
         $provider = Liberator::liberate($provider->get());
 
-        $result = ['user_id' => uniqid()];
+        $result = array('user_id' => uniqid());
         $newResult = $provider->prepareAccessTokenResponse($result);
 
         $this->assertFalse(isset($newResult['resource_owner_id']));
@@ -688,7 +688,7 @@ class AbstractProviderTest extends TestCase
         $provider->getAccessTokenResourceOwnerId->returns('user.name');
         $provider = Liberator::liberate($provider->get());
 
-        $result = ['user' => ['id' => uniqid()]];
+        $result = array('user' => array('id' => uniqid()));
         $newResult = $provider->prepareAccessTokenResponse($result);
 
         $this->assertFalse(isset($newResult['resource_owner_id']));
@@ -700,6 +700,6 @@ class AbstractProviderTest extends TestCase
 
         $headers = $provider->getAuthorizationHeaders();
 
-        $this->assertEquals([], $headers);
+        $this->assertEquals(array(), $headers);
     }
 }
