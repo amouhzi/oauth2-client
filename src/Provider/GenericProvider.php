@@ -80,7 +80,7 @@ class GenericProvider extends AbstractProvider
      * @param array $options
      * @param array $collaborators
      */
-    public function __construct(array $options = [], array $collaborators = [])
+    public function __construct(array $options = array(), array $collaborators = array())
     {
         $this->assertRequiredOptions($options);
 
@@ -104,7 +104,7 @@ class GenericProvider extends AbstractProvider
      */
     protected function getConfigurableOptions()
     {
-        return array_merge($this->getRequiredOptions(), [
+        return array_merge($this->getRequiredOptions(), array(
             'accessTokenMethod',
             'accessTokenResourceOwnerId',
             'scopeSeparator',
@@ -112,7 +112,7 @@ class GenericProvider extends AbstractProvider
             'responseCode',
             'responseResourceOwnerId',
             'scopes',
-        ]);
+        ));
     }
 
     /**
@@ -122,11 +122,11 @@ class GenericProvider extends AbstractProvider
      */
     protected function getRequiredOptions()
     {
-        return [
+        return array(
             'urlAuthorize',
             'urlAccessToken',
             'urlResourceOwnerDetails',
-        ];
+        );
     }
 
     /**
@@ -237,6 +237,6 @@ class GenericProvider extends AbstractProvider
      */
     protected function getAuthorizationHeaders($token = null)
     {
-        return ['Authorization' => 'Bearer ' . $token];
+        return array('Authorization' => 'Bearer ' . $token);
     }
 }
