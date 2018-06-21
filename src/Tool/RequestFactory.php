@@ -37,7 +37,7 @@ class RequestFactory
     public function getRequest(
         $method,
         $uri,
-        array $headers = [],
+        array $headers = array(),
         $body = null,
         $version = '1.1'
     ) {
@@ -55,7 +55,7 @@ class RequestFactory
     {
         // Should match default values for getRequest
         $defaults = [
-            'headers' => [],
+            'headers' => array(),
             'body'    => null,
             'version' => '1.1',
         ];
