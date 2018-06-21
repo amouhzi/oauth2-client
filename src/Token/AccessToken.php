@@ -48,7 +48,7 @@ class AccessToken implements JsonSerializable
     /**
      * @var array
      */
-    protected $values = [];
+    protected $values = array();
 
     /**
      * Constructs an access token.
@@ -57,7 +57,7 @@ class AccessToken implements JsonSerializable
      *     in the access token request. The `access_token` option is required.
      * @throws InvalidArgumentException if `access_token` is not provided in `$options`.
      */
-    public function __construct(array $options = [])
+    public function __construct(array $options = array())
     {
         if (empty($options['access_token'])) {
             throw new InvalidArgumentException('Required option not passed: "access_token"');
