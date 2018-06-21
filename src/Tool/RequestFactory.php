@@ -54,11 +54,11 @@ class RequestFactory
     protected function parseOptions(array $options)
     {
         // Should match default values for getRequest
-        $defaults = [
+        $defaults = array(
             'headers' => array(),
             'body'    => null,
             'version' => '1.1',
-        ];
+        );
 
         return array_merge($defaults, $options);
     }
@@ -72,7 +72,7 @@ class RequestFactory
      *
      * @return Request
      */
-    public function getRequestWithOptions($method, $uri, array $options = [])
+    public function getRequestWithOptions($method, $uri, array $options = array())
     {
         $options = $this->parseOptions($options);
 
