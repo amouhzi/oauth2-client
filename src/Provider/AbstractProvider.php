@@ -479,7 +479,7 @@ abstract class AbstractProvider
      */
     protected function getAccessTokenOptions(array $params)
     {
-        $options = ['headers' => ['content-type' => 'application/x-www-form-urlencoded']];
+        $options = array('headers' => array('content-type' => 'application/x-www-form-urlencoded'));
 
         if ($this->getAccessTokenMethod() === self::METHOD_POST) {
             $options['body'] = $this->getAccessTokenBody($params);
@@ -514,11 +514,11 @@ abstract class AbstractProvider
     {
         $grant = $this->verifyGrant($grant);
 
-        $params = [
+        $params = array(
             'client_id'     => $this->clientId,
             'client_secret' => $this->clientSecret,
             'redirect_uri'  => $this->redirectUri,
-        ];
+        );
 
         $params   = $grant->prepareRequestParameters($params, $options);
         $request  = $this->getAccessTokenRequest($params);
@@ -567,9 +567,9 @@ abstract class AbstractProvider
      */
     protected function createRequest($method, $url, $token, array $options)
     {
-        $defaults = [
+        $defaults = array(
             'headers' => $this->getHeaders($token),
-        ];
+        );
 
         $options = array_merge_recursive($defaults, $options);
         $factory = $this->getRequestFactory();
@@ -783,7 +783,7 @@ abstract class AbstractProvider
      */
     protected function getDefaultHeaders()
     {
-        return [];
+        return array();
     }
 
     /**
@@ -800,7 +800,7 @@ abstract class AbstractProvider
      */
     protected function getAuthorizationHeaders($token = null)
     {
-        return [];
+        return array();
     }
 
     /**
