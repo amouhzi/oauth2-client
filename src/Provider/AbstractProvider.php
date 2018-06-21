@@ -35,9 +35,6 @@ use UnexpectedValueException;
  */
 abstract class AbstractProvider
 {
-    use ArrayAccessorTrait;
-    use QueryBuilderTrait;
-
     /**
      * @var string Key used in a token response to identify the resource owner.
      */
@@ -824,5 +821,43 @@ abstract class AbstractProvider
         }
 
         return $this->getDefaultHeaders();
+    }
+    
+    /**
+     * Returns a value by key using dot notation.
+     *
+     * @param  array      $data
+     * @param  string     $key
+     * @param  mixed|null $default
+     * @return mixed
+     */
+    private function getValueByKey(array $data, $key, $default = null)
+    {
+        if (!is_string($key) || empty($key) || !count($data)) {
+            return $default;
+        }
+        if (strpos($key, '.') !== false) {
+            $keys = explode('.', $key);
+            foreach ($keys as $innerKey) {
+                if (!is_array($data) || !array_key_exists($innerKey, $data)) {
+                    return $default;
+                }
+                $data = $data[$innerKey];
+            }
+            return $data;
+        }
+        return array_key_exists($key, $data) ? $data[$key] : $default;
+    }
+    
+    /**
+     * Build a query string from an array.
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    protected function buildQueryString(array $params)
+    {
+        return http_build_query($params, null, '&', \PHP_QUERY_RFC3986);
     }
 }
