@@ -96,7 +96,7 @@ abstract class AbstractProvider
      *     `grantFactory`, `requestFactory`, and `httpClient`.
      *     Individual providers may introduce more collaborators, as needed.
      */
-    public function __construct(array $options = [], array $collaborators = [])
+    public function __construct(array $options = array(), array $collaborators = array())
     {
         foreach ($options as $option => $value) {
             if (property_exists($this, $option)) {
@@ -134,7 +134,7 @@ abstract class AbstractProvider
      */
     protected function getAllowedClientOptions(array $options)
     {
-        $client_options = ['timeout', 'proxy'];
+        $client_options = array('timeout', 'proxy');
 
         // Only allow turning off ssl verification if it's for a proxy
         if (!empty($options['proxy'])) {
@@ -344,7 +344,7 @@ abstract class AbstractProvider
      * @param  array $options
      * @return string Authorization URL
      */
-    public function getAuthorizationUrl(array $options = [])
+    public function getAuthorizationUrl(array $options = array())
     {
         $base   = $this->getBaseAuthorizationUrl();
         $params = $this->getAuthorizationParameters($options);
@@ -361,7 +361,7 @@ abstract class AbstractProvider
      * @return mixed
      */
     public function authorize(
-        array $options = [],
+        array $options = array(),
         callable $redirectHandler = null
     ) {
         $url = $this->getAuthorizationUrl($options);
